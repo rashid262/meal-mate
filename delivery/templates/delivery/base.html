@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food Delivery</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8; /* Light background */
+            color: #333; /* Dark text */
+        }
+
+        nav {
+            background-color: #333;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        nav h2 {
+            color: white;
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #555, #444); /* Gradient background */
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: linear-gradient(135deg, #777, #666);
+        }
+
+        .content-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 20px auto; /* Centering content */
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <h2>Food Delivery</h2>
+        <div class="nav-links">
+            <a href="{% url 'delivery:display_res' %}">View Restaurants</a>
+            <a href="{% url 'delivery:add_res' %}">Add Restaurant</a>
+            <a href="{% url 'delivery:sign_in' %}">Sign In</a>
+            <a href="{% url 'delivery:sign_up' %}">Sign Up</a>
+        </div>
+    </nav>
+    <div class="content-container">
+        {% block content %} {% endblock %}
+    </div>
+</body>
+</html>

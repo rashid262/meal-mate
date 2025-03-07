@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal-Mate | Welcome</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(rgba(20, 20, 20, 0.8), rgba(10, 10, 10, 0.9)), url("{% static 'delivery/images/food-bg.jpg' %}") no-repeat center center/cover;
+            text-align: center;
+            color: #f0f0f0;
+        }
+
+        .container {
+            background: rgba(30, 30, 30, 0.8);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            color: #e8c290;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 10px;
+            text-decoration: none;
+            color: #222;
+            background: linear-gradient(135deg, #f8f8f8, #e0e0e0);
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #e0e0e0, #f8f8f8);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome to Meal-Mate 🍽️</h2>
+        <a href="{% url 'delivery:sign_up' %}" class="btn">Sign Up</a>
+        <a href="{% url 'delivery:sign_in' %}" class="btn">Sign In</a>
+    </div>
+</body>
+</html>

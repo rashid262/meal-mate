@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food Delivery</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        nav h2 {
+            color: white;
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #555, #444);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: linear-gradient(135deg, #777, #666);
+        }
+
+        .menu-container {
+            margin-top: 50px;
+        }
+
+        .menu-container h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .menu-container p {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .menu-container a {
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .menu-container table {
+            width: 95%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-container th, .menu-container td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .menu-container th {
+            background-color: #f2f2f2;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .menu-container button {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .confirmation-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .confirmation-message button {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h2>Food Delivery</h2>
+        <div class="nav-links">
+            <a href="{% url 'delivery:cusdisplay_res' username %}">View Restaurants</a>
+            <a href="{% url 'delivery:sign_in' %}">Sign In</a>
+            <a href="{% url 'delivery:sign_up' %}">Sign Up</a>
+        </div>
+    </nav>
+
+    <div class="menu-container">
+        <h2>Menu for {{ res.Res_name }}</h2>
+        <p>Address: {{ res.address }}</p>
+        <p>Category: {{ res.Food_cat }}</p>
+        <p>Rating: {{ res.rating }}</p>
+        <a href="{% url 'delivery:show_cart' username %}">Show Cart </a>
+
+        <table>
+            <tr>
+                <th>Item Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Availability</th>
+                <th>Category</th>
+                <th>Action</th>
+            </tr>
+            {% for item in menu %}
+            <tr>
+                <td>{{ item.item_name }}</td>
+                <td>{{ item.description }}</td>
+                <td>${{ item.price }}</td>
+                <td>
+                    {% if item.is_available %}Available{% else %}Not Available{% endif %}
+                </td>
+                <td>{{ item.category }}</td>
+                <td>
+                    <form method="POST" action="{% url 'delivery:add_to_cart' item.id username %}" class="add-to-cart-form">
+                        {% csrf_token %}
+                        <button type="button" class="add-to-cart-button" data-item-name="{{ item.item_name }}">
+                            Add to Cart
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No menu items available.</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="confirmation-message" id="confirmationMessage">
+            <p>Are you sure you want to add <span id="itemName"></span> to your cart?</p>
+            <button id="confirmButton">Yes</button>
+            <button id="cancelButton">No</button>
+        </div>
+
+        <script>
+            document.querySelectorAll('.add-to-cart-button').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const itemName = this.getAttribute('data-item-name');
+                    document.getElementById('itemName').textContent = itemName;
+                    document.getElementById('confirmationMessage').style.display = 'block';
+
+                    const confirmButton = document.getElementById('confirmButton');
+                    const cancelButton = document.getElementById('cancelButton');
+
+                    confirmButton.onclick = () => {
+                        this.parentElement.submit();
+                        document.getElementById('confirmationMessage').style.display = 'none';
+                    };
+
+                    cancelButton.onclick = () => {
+                        document.getElementById('confirmationMessage').style.display = 'none';
+                    };
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>

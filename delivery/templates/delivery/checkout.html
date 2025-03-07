@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f8f8;
+            color: #333;
+            text-align: center;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            border-bottom: 1px solid #ddd;
+        }
+
+        button#rzp-button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button#rzp-button:hover {
+            background-color: #0056b3;
+        }
+
+        p.error {
+            color: red;
+            margin-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Checkout</h1>
+    <h2>Welcome, {{ username }}</h2>
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% else %}
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.item_name }}</td>
+                <td>₹{{ item.price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3>Total: ₹{{ total_price }}</h3>
+
+    <button id="rzp-button">Pay with Razorpay</button>
+    {% endif %}
+
+    <script>
+        var options = {
+            key: "{{ razorpay_key_id }}",
+            amount: "{{ total_price|floatformat:2|add:'0.00'|floatformat:2 }}00",
+            currency: "INR",
+            name: "Meal Mate",
+            description: "Order Payment",
+            order_id: "{{ order_id }}",
+            handler: function (response) {
+                alert("Payment Successful!");
+                window.location.href = "{% url 'delivery:orders' username %}";
+            },
+            prefill: {
+                name: "{{ username }}",
+                email: "customer@example.com",
+                contact: "9999999999",
+            },
+            theme: {
+                color: "#528FF0",
+            },
+        };
+        var rzp = new Razorpay(options);
+
+        document.getElementById("rzp-button").onclick = function (e) {
+            rzp.open();
+            e.preventDefault();
+        };
+    </script>
+</body>
+</html>

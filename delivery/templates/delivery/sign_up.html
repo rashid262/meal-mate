@@ -1,0 +1,35 @@
+<form method="POST" action="{% url 'delivery:handle_signup' %}" style="max-width: 400px; margin: 50px auto; padding: 30px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); font-family: 'Poppins', sans-serif;">
+  {% csrf_token %}
+  <h2 style="text-align: center; margin-bottom: 25px; color: #333;">Sign Up</h2>
+
+  <div style="margin-bottom: 20px;">
+      <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #555;">Username</label>
+      <input type="text" name="username" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" />
+  </div>
+
+  <div style="margin-bottom: 20px;">
+      <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #555;">Password</label>
+      <input type="password" name="password" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" />
+  </div>
+
+  <div style="margin-bottom: 20px;">
+      <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #555;">Email</label>
+      <input type="email" name="email" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" />
+  </div>
+
+  <div style="margin-bottom: 20px;">
+      <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #555;">Mobile</label>
+      <input type="tel" name="mobile" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" />
+  </div>
+
+  <div style="margin-bottom: 20px;">
+      <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #555;">Address</label>
+      <textarea name="address" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; resize: vertical;"></textarea>
+  </div>
+
+  <button type="submit" style="background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px;">Sign Up</button>
+</form>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+</style>
